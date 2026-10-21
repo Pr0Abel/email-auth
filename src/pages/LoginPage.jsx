@@ -1,7 +1,19 @@
 import { Link } from 'react-router-dom'
 
 export default function LoginPage() {
-  const handleSubmit = (e) => e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // TODO - Plan: POST email, passwd to backend endpoint
+    fetch(`http://localhost:3000/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify("TODO")
+    })
+    .then(console.log)
+    .catch(console.warn)
+  }
   return (
     <div className="card narrow">
       <h1>Log in</h1>
