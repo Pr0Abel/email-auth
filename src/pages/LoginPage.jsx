@@ -15,7 +15,13 @@ export default function LoginPage() {
       },
       body: JSON.stringify({email, password})
     })
-    .then(console.log)
+    .then(async (res)=>{
+      if (res.ok) {
+        const response = await res.json()
+      } else {
+        console.warn(res.statusText)
+      }
+    })
     .catch(console.warn)
   }
   return (
