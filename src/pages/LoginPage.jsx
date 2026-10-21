@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -18,6 +20,11 @@ export default function LoginPage() {
     .then(async (res)=>{
       if (res.ok) {
         const response = await res.json()
+        const {loggedIn=false} = response
+        console.log('email, loggedIn', email, loggedIn)
+
+        if (loggedIn) navigate('/profile')
+
       } else {
         console.warn(res.statusText)
       }
