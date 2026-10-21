@@ -5,6 +5,18 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+/**
+ * POST /login
+ */
+app.post('/login', (req, res)=>{
+    const {email='', password=''} = req.body
+    // TODO - query database
+    return res.status(200).json({
+        loggedIn: true,
+        message: 'Logged in!'
+    })
+})
+
 app.use((req, res)=>res.status(404).json({
     error: 'Not Found'
 }))
