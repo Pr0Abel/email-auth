@@ -1,20 +1,45 @@
 const express = require('express')
 const cors = require('cors')
+const mysql = require('mysql2')
 const app = express()
 
 app.use(cors())
 app.use(express.json())
+
+const conn = mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: '',
+    database: 'users'
+})
 
 /**
  * POST /login
  */
 app.post('/login', (req, res)=>{
     const {email='', password=''} = req.body
-    // TODO - query database
-    return res.status(200).json({
-        loggedIn: true,
-        message: 'Logged in!'
-    })
+    // Query database
+
+    // TODO - serve session if exists
+    conn.query(`SELECT id, name, email, password FROM users WHERE email = ? AND password = ?`, 
+        [email, password], 
+        (error, result, fields) => {
+            if (error) {
+                console.warn(error)
+                return res.status(500).json({error: 'Internal Server Error'})
+            } else {
+                console.log('result', result)
+                return res.status(200).json({
+                    loggedIn: true,
+                    message: 'Logged in!',
+                    result
+                })
+            }
+        }
+    )
+
+
 })
 
 app.use((req, res)=>res.status(404).json({
